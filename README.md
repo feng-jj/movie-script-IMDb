@@ -1,0 +1,2 @@
+# movie-script-IMDb
+In the present day, the entertainment industry is constantly evolving toward making the most enjoyable and profitable sources of film entertainment. Through the use of movie rating sites, we can now decide whether or not it is worth the trip to the movie theatre to watch a partiuclar film. With this in mind, I was interested in seeing This is a WebScraper/MovieScript analysis project in Python containing two parts. 
