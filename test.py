@@ -4,6 +4,10 @@ from IMDb import IMDb
 from bs4 import BeautifulSoup
 import pandas as pd
 
+""" 
+    This file is used to test out functionality and new added features.
+"""
+
 url = 'https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres=horror&sort=user_rating,desc'
 def main(url):
     r = requests.get(url)
