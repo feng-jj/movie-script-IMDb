@@ -8,7 +8,7 @@ import pandas as pd
     This file is used to test out functionality and new added features.
 """
 
-url = 'https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres=horror&sort=user_rating,desc'
+url = 'https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres=animation&sort=boxoffice_gross_us,desc'
 def main(url):
     r = requests.get(url)
 
@@ -20,10 +20,11 @@ def main(url):
     movieTitles = soup.select('h3.lister-item-header a')
     movieRating = soup.select('div.inline-block.ratings-imdb-rating')
     grossAmount = soup.select('p.sort-num_votes-visible span[name = nv]')
+
     # obtain all of the necessary data needed
     titles = [title.text for title in movieTitles]
     ratings = [float(rating['data-value']) for rating in movieRating]
-    amount = [int(gross['data-value'].replace(',', '')) for gross in grossAmount]
+    amount = [int(gross['data-value'].replace(',', '')) for votes, gross in pairwise(grossAmount)]
 
     print(titles)
     print(ratings)
@@ -38,6 +39,9 @@ def main(url):
     df.tail()
     df.to_csv('theData.csv', index=False, encoding='utf-8')
 
+def pairwise(iterable):
+    a = iter(iterable)
+    return zip(a, a)
 
 if __name__ == '__main__' :
     main(url)
