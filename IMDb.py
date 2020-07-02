@@ -9,8 +9,10 @@ def pairwise(iterable):
     return zip(a, a)
 
 
-# Defines the IMDb class that will contain the title and movie rating data from
+'''
+Defines the IMDb class that will contain the title and movie rating data from
 # a specific genre of movies
+'''
 class IMDb:
 
     def __init__(self, name):
@@ -76,7 +78,11 @@ class IMDb:
         # Change this based on how you want to sort the website. For now it will be based on box office, since
         # some movies actually don't have box office data.
         url_completed = '&sort=boxoffice_gross_us,desc'
-        url_pages = lambda a: url + '&start=' + a + '&ref_=adv_prv'
+
+        # a is the temp url that is created. B is the starting number for the page
+        url_pages = lambda a, b: a + '&start=' + b + '&ref_=adv_nxt'
+
+
         if aGenre == 'action':
             temp = url + 'action' + url_completed
             self.main(temp)
@@ -141,3 +147,5 @@ class IMDb:
             temp = url + 'western' + url_completed
             self.main(temp)
             return
+        else :
+            return 'this genre does not exist!'

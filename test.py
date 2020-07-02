@@ -8,7 +8,23 @@ import pandas as pd
     This file is used to test out functionality and new added features.
 """
 
-url = 'https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres=animation&sort=boxoffice_gross_us,desc'
+#url = 'https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres=animation&sort=boxoffice_gross_us,desc'
+
+
+def genre(aGenre):
+    url = 'https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres='
+    # Change this based on how you want to sort the website. For now it will be based on box office, since
+    # some movies actually don't have box office data.
+    url_completed = '&sort=boxoffice_gross_us,desc'
+
+    # a is the temp url that is created. B is the starting number for the page
+    url_pages = lambda a, b: a + '&start=' + b + '&ref_=adv_nxt'
+
+
+    temp = url + 'horror' + url_completed
+    main(temp)
+    return
+
 def main(url):
     r = requests.get(url)
 
