@@ -3,5 +3,5 @@ from IMDb import IMDb
 
 
 if __name__ == '__main__' :
-    horror = IMDb("animation")
-    horror.genre('animation')
+    horror = IMDb("act")
+    horror.genre('action')
