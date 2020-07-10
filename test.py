@@ -1,8 +1,8 @@
 import requests
-import random
+import numpy as np
 from IMDb import IMDb
 from bs4 import BeautifulSoup
-import pandas as pd
+import matplotlib.pyplot as plt
 
 """ 
     This file is used to test out functionality and new added features.
@@ -24,7 +24,7 @@ def genre(aGenre):
     url_pages = lambda a, b: a + '&start=' + str(b) + '&ref_=adv_nxt'
 
     #if aGenre == 'action':
-    temp = url + 'action' + url_completed
+    temp = url + aGenre + url_completed
     main(temp)
     numTitles = numberOfTitles(temp)
     counter = 1
@@ -83,8 +83,13 @@ def numberOfTitles(url):
     #numTitles = numbTitles[0]
 
 if __name__ == '__main__' :
-    genre('action')
-    print(titles)
-    print(ratings)
-    print(amount)
-    print(len(titles))
+    genre('western')
+    x = np.array([ratings])
+    y = np.array([amount])
+    plt.plot(x,y)
+    plt.xlabel('IMDb Rating')
+    plt.ylabel('Gross Amount')
+    # print(titles)
+    # print(ratings)
+    # print(amount)
+    # print(len(titles))
