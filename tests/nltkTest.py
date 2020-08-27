@@ -13,16 +13,26 @@ from textblob import TextBlob
     This file is used to test natural language processing
 '''
 
-url = 'https://www.imsdb.com/scripts/Mulan.html'
+url = 'https://www.imsdb.com/scripts/'
 
+def toUrl(title) :
+    urlTitle = title
+    if ':' in title:
+        urlTitle = urlTitle.replace(':', '')
+    if title[0:3] == 'The':
+        urlTitle = urlTitle.replace('The ', '')
+        urlTitle += ',-The'
+    urlTitle = urlTitle.replace(" ", "-")
+    return url + urlTitle + '.html'
 
 """
     Separates the url containing the script into a pair with dialogue and titles (i.e. names of characters, camera
     movement instructions such as FADE IN)
 """
 
-def getCorp(url):
-    r = requests.get(url)
+def getCorp(title):
+    urls = toUrl(title)
+    r = requests.get(urls)
     soup = BeautifulSoup(r.text, 'html.parser')
 
     # want to separate the titles (i.e. character names) with the dialogue.
@@ -87,6 +97,12 @@ def emotions(script) :
 
     print(text_object.affect_frequencies)
 
+    frequencies = text_object.affect_frequencies
+
+    SUM = list(frequencies.values())
+
+    return SUM
+
 """
     Testing the TextBlob lexicon
 """
@@ -107,7 +123,7 @@ def token(fullScript, allTitles) :
     stop_words = [stopwords.words("english")]
     stop_words.extend(titles1)
     update_list = ['the', 'and', 'you']
-    #stop_words.extend('to', 'the')
+    stop_words.extend(update_list)
 
     words = word_tokenize(fullScript)
     # extracting only the dialogue and plot descriptions
@@ -120,9 +136,12 @@ def token(fullScript, allTitles) :
 
 
 if __name__ == '__main__':
-    info = getCorp(url)
+    newUrl = "Blade: Trinity"
+    print(newUrl[0:2])
+    info = getCorp(newUrl)
     script_words = token(info[0], info[1])
     freq_dist = FreqDist(script_words)
     stuff = emotions(info)
+    print(stuff[0])
     stuff1 = blob(info[0] + info[1])
     #print(stuff)
