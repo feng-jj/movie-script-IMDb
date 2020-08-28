@@ -8,7 +8,7 @@ from nltk.tokenize import PunktSentenceTokenizer
 from nltk.tag import pos_tag
 from nltk import FreqDist
 from nrclex import NRCLex
-
+from textblob import TextBlob
 
 
 class emotions:
@@ -32,6 +32,34 @@ class emotions:
         self.anger = []
         self.disgust = []
         self.joy = []
+        self.trust = []
+        self.surprise = []
+        self.getEmotions()
+
+    '''
+        Populates our class with all the movie titles' emotion data in their
+        respective catagories.
+    '''
+    def getEmotions(self) :
+        for title in self.titles :
+            htmlUrl = self.toUrl(title)
+            corp = self.getCorp(htmlUrl)
+            if (corp == {"", ""}):
+                self.polarity.append(None)
+                self.subjectivity.append(None)
+                self.positive.append(None)
+                self.negative.append(None)
+                self.fear.append(None)
+                self.anticipation.append(None)
+                self.sadness.append(None)
+                self.anger.append(None)
+                self.disgust.append(None)
+                self.joy.append(None)
+                self.trust.append(None)
+                self.surprise.append(None)
+                continue
+            else:
+                self.populateEmotions(corp)
 
     '''
         Separates the url containing the script into a pair with dialogue and titles
@@ -70,30 +98,9 @@ class emotions:
         return pair
 
     '''
-        Populates our class with all the movie titles' emotion data in their
-        respective catagories.
+        Populating the stuctures inside our class with emotion statistics
     '''
-    def getEmotions(self) :
-        for title in self.titles :
-            htmlUrl = self.toUrl(title)
-            corp = self.getCorp(htmlUrl)
-            if (corp == {"", ""}):
-                self.polarity.append(None)
-                self.subjectivity.append(None)
-                self.positive.append(None)
-                self.negative.append(None)
-                self.fear.append(None)
-                self.anticipation.append(None)
-                self.sadness.append(None)
-                self.anger.append(None)
-                self.disgust.append(None)
-                self.joy.append(None)
-                continue
-            else:
-                self.getEmotions(corp)
-
-
-    def getEmotions(self,script) :
+    def populateEmotions(self, script) :
         totalScript = script[0] + script[1]
         text_object = NRCLex(totalScript)
         #emotion_scores = text_object.raw_emotion_scores
@@ -108,6 +115,11 @@ class emotions:
         self.sadness.append(frequency_of_emotions[7])
         self.disgust.append(frequency_of_emotions[8])
         self.joy.append(frequency_of_emotions[9])
+        # getting polarity and subjectivity
+        blob_object = TextBlob(totalScript)
+        sentiments = list(blob_object.sentiment)
+        self.polarity.append(sentiments[0])
+        self.subjectivity.append(sentiments[1])
 
     '''
         Converting the title into the proper URL on the IMDSb website
@@ -115,11 +127,13 @@ class emotions:
     def toUrl(self, title) :
         urlTitle = title
         # preprocessing the format of the html link
+        if ' - ' in title:
+            urlTitle = urlTitle.replace(' - ', ' ')
         if ':' in title:
             urlTitle = urlTitle.replace(':', '')
         if title[0:4] == 'The ':
             urlTitle.replace(title[0:4], '')
-            urlTitle.append(',-The')
+            urlTitle += ',-The'
         # replace all spaces with dashes '-'
         urlTitle = urlTitle.replace(' ', '-')
         return self.url + urlTitle + '.html'

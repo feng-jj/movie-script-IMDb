@@ -2,13 +2,12 @@ import requests
 import random
 from bs4 import BeautifulSoup
 import pandas as pd
-
+from emotions import *
 
 # helper function to iterate through multiple elements in an array
 def pairwise(iterable):
     a = iter(iterable)
     return zip(a, a)
-
 
 '''
 Defines the IMDb class that will contain the title and movie rating data from
@@ -16,14 +15,17 @@ Defines the IMDb class that will contain the title and movie rating data from
 '''
 class IMDb:
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, genre):
+        self.genre = genre
         self.titles = []
         self.ratings = []
         self.amount = []
         self.numTitles = 0
+        self.getGenre(self.genre)
+        self.emotion_genre = emotions(self.titles, self.genre)
+        self.toCsv()
 
-    """ 
+    """
     main(url)
     parameters: the url of the IMDb page being looked at
     function: passes in the url ofthe IMDb page, parses all the title and
@@ -38,12 +40,12 @@ class IMDb:
         # getting all of our necessary data from our html file
         movieTitles = soup.select('h3.lister-item-header a')
         movieRating = soup.select('div.inline-block.ratings-imdb-rating')
-        grossAmount = soup.select('p.sort-num_votes-visible span[name = nv]')
+        grossAmount = soup.select('p.sort-num_votes-visible span[genre = nv]')
 
         # obtain all of the necessary data needed
         self.titles.extend([title.text for title in movieTitles])
         self.ratings.extend([float(rating['data-value']) for rating in movieRating])
-        # had to separate the right data values, as votes and gross amount were both under the name nv in span
+        # had to separate the right data values, as votes and gross amount were both under the genre nv in span
         self.amount.extend(int(gross['data-value'].replace(',', '')) for votes, gross in pairwise(grossAmount))
 
         # print(self.titles)
@@ -58,15 +60,21 @@ class IMDb:
 
     def toCsv(self):
         records = []
-        for (a, b, c) in zip(self.titles, self.ratings, self.amount):
-            records.append((a, b, c))
-        df = pd.DataFrame(records, columns=('Title', 'Rating', 'Net Gross'))
-        df.to_csv(self.name + '.csv', index=False, encoding='utf-8')
+        for (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o) in zip(self.titles, self.ratings, self.amount,
+            self.emotion_genre.fear, self.emotion_genre.anger, self.emotion_genre.anticipation,
+            self.emotion_genre.trust, self.emotion_genre.surprise, self.emotion_genre.positive, self.emotion_genre.negative,
+            self.emotion_genre.sadness, self.emotion_genre.disgust, self.emotion_genre.joy, self.emotion_genre.polarity,
+            self.emotion_genre.subjectivity):
+            records.append((a, b, c, d, e, f, g, h, i, j, k, l, m, n, o))
+        df = pd.DataFrame(records, columns=('Title', 'Rating', 'Net Gross', 'fear', 'anger', 'anticipation',
+                                            'trust', 'surprise', 'positive', 'negative', 'sadness', 'disgust',
+                                            'joy', 'polarity', 'subjectivity'))
+        df.to_csv(self.genre + '.csv', index=False, encoding='utf-8')
 
-    ''' 
+    '''
         numberOfTitles
         parameters: url of website looked at
-        function: returns number of titles of a particular genre being looked at 
+        function: returns number of titles of a particular genre being looked at
     '''
 
     def numberOfTitles(self, url):
@@ -80,8 +88,8 @@ class IMDb:
     '''
         advancePages
         parameters: url of website looked at
-        function: advances the pages of the particular genre until all title data is collected 
-                  and stored into the private member variables of the class. 
+        function: advances the pages of the particular genre until all title data is collected
+                  and stored into the private member variables of the class.
     '''
 
     def advancePages(self, temp):
@@ -100,17 +108,16 @@ class IMDb:
             counter += 50
             anew = url_pages(temp, counter)
             self.main(anew)
-        self.toCsv()
 
     """
     genre
     parameters: the genre currently being looked at for the ratings and title data
     function: passes in the url of the IMDb page, parses all the title and
               rating data from the url based on the any of the 18 available
-              inputted genres (on the movie script website). 
+              inputted genres (on the movie script website).
     """
 
-    def genre(self, aGenre):
+    def getGenre(self, aGenre):
         url = 'https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres='
         # Change this based on how you want to sort the website. For now it will be based on box office, since
         # some movies actually don't have box office data.

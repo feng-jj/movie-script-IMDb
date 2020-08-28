@@ -10,4 +10,4 @@ There are two parts to this project:
 
 1. Webscraping movie rating data
   - For the purpose of eliminating bias and having a (relatively) smaller dataset, we will use scores from IMDb, which is a website that compiles all rating data from all users input
-  -using BeautifulSoup, request, and pandas libraries in Python
+

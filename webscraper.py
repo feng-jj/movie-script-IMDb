@@ -3,7 +3,5 @@ from IMDb import IMDb
 
 
 if __name__ == '__main__' :
-    action = IMDb("act")
-    action.genre('action')
-
-
+    action = IMDb('action')
+    
