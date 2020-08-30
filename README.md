@@ -8,6 +8,3 @@ In the present day, the entertainment industry is constantly evolving toward mak
 
 With this in mind, I was interested in seeing if there was a correlation between the online movie ratings and the box office potential it has, as well as seeing if certain sentiments expressed in movies could have an impact on either metric. 
 
-# Results
-
-
