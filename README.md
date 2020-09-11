@@ -3,5 +3,8 @@ A webscraping script that fetches all the movie title data for each of the 18 ge
 
 The data is then exported to a CSV file where a correlation analysis is done with each metric and the rating/box office data.
 
-
-
+# References
+https://www.imsdb.com/
+https://monkeylearn.com/sentiment-analysis/
+http://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm
+http://www.nltk.org/book/
