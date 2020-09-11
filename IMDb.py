@@ -22,13 +22,20 @@ class IMDb:
         self.amount = []
         self.numTitles = 0
         self.getGenre(self.genre)
+        self.emotion_genre = 0
+        #self.toCsv() 
+
+    '''
+        gatherEmotion(titles, genre)
+        poulates the results of sentiment analysis in our object
+    '''
+    def gatherEmotions(self, titles, genre) :
         self.emotion_genre = emotions(self.titles, self.genre)
-        self.toCsv()
 
     """
-    main(url)
-    parameters: the url of the IMDb page being looked at
-    function: passes in the url ofthe IMDb page, parses all the title and
+        main(url)
+        parameters: the url of the IMDb page being looked at
+        function: passes in the url ofthe IMDb page, parses all the title and
                   rating data from the url. Rating data has at least 25,000 ratings from users.
     """
 
