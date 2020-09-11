@@ -5,6 +5,9 @@ The data is then exported to a CSV file where a correlation analysis is done wit
 
 # References
 https://www.imsdb.com/
+
 https://monkeylearn.com/sentiment-analysis/
+
 http://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm
+
 http://www.nltk.org/book/
