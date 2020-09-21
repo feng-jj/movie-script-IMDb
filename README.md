@@ -4,7 +4,7 @@ A webscraping script that fetches all the movie title data for each of the 18 ge
 The data is then exported to a CSV file where a correlation analysis is then done manually with each metric and the rating/box office data.
 
 # How To Use
-Just run main.py! The program will take a long time due to the sheer amount of data we are working with (200,000+ titles & each of their movie scripts), so it would be best to comment out and run one IMDb object at a time.
+Just run main.py! The program will take a long time due to the sheer amount of data we are working with (200,000+ titles and each of their movie scripts), so it would be best to comment out and run one IMDb object at a time.
 
 # References
 https://www.imsdb.com/
